@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎤 CloneVoz - Clonagem de Voz com IA</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <!-- Cabeçalho -->
+    <header>
+        <div class="container">
+            <h1>🎤 CloneVoz</h1>
+            <p class="subtitle">Clone a tua voz com IA em segundos</p>
+        </div>
+    </header>
+
+    <!-- Conteúdo Principal -->
+    <main class="container">
+        <!-- Banner de Estado -->
+        <div id="statusBanner" class="status-banner" style="display: none;"></div>
+
+        <!-- Passo 1: Gravar Amostra de Voz -->
+        <section class="card">
+            <h2>📝 Passo 1: Grava a Tua Amostra de Voz</h2>
+            <p>Grava pelo menos 10 segundos de fala clara. Diz algo natural como: <em>"Olá, o meu nome é Fernando e esta é a minha voz."</em></p>
+
+            <div class="record-section">
+                <button id="recordBtn" class="btn btn-primary">
+                    <span class="btn-icon">🎙️</span>
+                    Iniciar Gravação
+                </button>
+                <button id="stopBtn" class="btn btn-secondary" disabled>
+                    <span class="btn-icon">⏹️</span>
+                    Parar Gravação
+                </button>
+                <button id="uploadBtn" class="btn btn-success" disabled>
+                    <span class="btn-icon">💾</span>
+                    Guardar Gravação
+                </button>
+            </div>
+
+            <div id="recordingStatus" class="status-text"></div>
+            <div id="audioPreview" style="display: none;">
+                <h4>Pré-visualização do Áudio</h4>
+                <audio id="audioPlayback" controls></audio>
+            </div>
+
+            <!-- Gravações Existentes -->
+            <div class="recordings-list" id="recordingsList">
+                <h3>As Tuas Amostras de Voz</h3>
+                <div id="recordingsContainer">
+                    <p class="loading">A carregar gravações...</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Passo 2: Gerar Fala -->
+        <section class="card">
+            <h2>🎨 Passo 2: Gera Fala com a Tua Voz</h2>
+            <p>Escreve qualquer texto e ouve-o com a tua voz clonada!</p>
+
+            <div class="form-group">
+                <label for="textInput">Introduz o Texto</label>
+                <textarea
+                    id="textInput"
+                    rows="5"
+                    placeholder="Escreve o texto que queres converter em fala..."
+                    maxlength="5000"
+                ></textarea>
+                <div class="char-counter">
+                    <span id="charCount">0</span> / 5000 caracteres
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="voiceSampleSelect">Seleciona a Amostra de Voz</label>
+                <select id="voiceSampleSelect" class="form-control">
+                    <option value="">-- Seleciona uma amostra de voz --</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="languageSelect">Idioma</label>
+                <select id="languageSelect" class="form-control">
+                    <option value="pt" selected>🇵🇹 Português</option>
+                    <option value="en">🇬🇧 Inglês</option>
+                    <option value="es">🇪🇸 Espanhol</option>
+                    <option value="fr">🇫🇷 Francês</option>
+                    <option value="de">🇩🇪 Alemão</option>
+                    <option value="it">🇮🇹 Italiano</option>
+                    <option value="ru">🇷🇺 Russo</option>
+                    <option value="zh">🇨🇳 Chinês</option>
+                    <option value="ja">🇯🇵 Japonês</option>
+                    <option value="ko">🇰🇷 Coreano</option>
+                </select>
+            </div>
+
+            <button id="generateBtn" class="btn btn-primary btn-large" disabled>
+                <span class="btn-icon">✨</span>
+                Gerar Fala
+            </button>
+
+            <div id="generationStatus" class="status-text"></div>
+
+            <!-- Áudio Gerado -->
+            <div id="generatedAudio" style="display: none;">
+                <h3>Fala Gerada</h3>
+                <audio id="generatedPlayback" controls></audio>
+                <button id="downloadBtn" class="btn btn-success">
+                    <span class="btn-icon">⬇️</span>
+                    Descarregar Áudio
+                </button>
+            </div>
+        </section>
+
+        <!-- Passo 3: Biblioteca de Áudio -->
+        <section class="card">
+            <h2>📚 A Tua Biblioteca de Áudio</h2>
+            <p>Todos os áudios gerados anteriormente:</p>
+            <div id="outputsList">
+                <p class="loading">A carregar ficheiros de áudio...</p>
+            </div>
+        </section>
+
+        <!-- Informações do Sistema -->
+        <section class="card info-card">
+            <h2>ℹ️ Informações do Sistema</h2>
+            <div id="systemInfo">
+                <p class="loading">A carregar informações do sistema...</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Rodapé -->
+    <footer>
+        <div class="container">
+            <p>Feito com ❤️ por <a href="https://github.com/DrNOFX97" target="_blank">Fernando Nuno Vieira</a></p>
+            <p>Powered by Fish Speech S1-mini | <a href="https://github.com/DrNOFX97/VoiceClone" target="_blank">Ver no GitHub</a></p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

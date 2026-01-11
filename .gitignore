@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+
+# Voice Recordings & Outputs
+recordings/*.wav
+recordings/*.mp3
+outputs/*.wav
+outputs/*.mp3
+
+# Keep directories but not contents
+!recordings/.gitkeep
+!outputs/.gitkeep
+
+# Model cache
+.cache/
+models/
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+*.tmp
+temp/
