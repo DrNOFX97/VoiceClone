@@ -48,11 +48,31 @@ Clone a tua voz com apenas 10 segundos de áudio e gera fala em português de Po
 
 ## 📋 Pré-requisitos
 
+### Software
 - **Python 3.11** (obrigatório - não funciona com 3.12 ou 3.13)
-- **Mac M1/M2** (recomendado para MPS) ou GPU NVIDIA (CUDA) ou CPU
 - **Microfone** para gravar amostras de voz
 - **~10 GB de espaço em disco** (modelo + dependências)
 - **Conexão à internet** (para download inicial do modelo)
+
+### Hardware
+
+#### 🍎 Mac (Recomendado)
+- **Mac M1/M2/M3** com GPU integrada (MPS)
+- **RAM**: 12-16 GB de unified memory
+- **Performance**: Boa (~10-30 segundos por geração)
+
+#### 🖥️ PC com GPU NVIDIA (CUDA)
+- **VRAM Recomendada**: 12 GB para inferência fluída
+- **GPUs Compatíveis**:
+  - **Económica**: RTX 3060 (12 GB) - ~€350
+  - **Média**: RTX 4070 (12 GB) - ~€650
+  - **High-End**: RTX 4090 (24 GB) - ~€1800
+- **Performance**: Excelente (RTX 4090: real-time factor 1:7)
+
+#### 💻 CPU (Fallback)
+- **Qualquer CPU moderno** (Intel/AMD)
+- **RAM**: 16 GB recomendado
+- **Performance**: Lenta (~1-5 minutos por geração)
 
 ---
 
