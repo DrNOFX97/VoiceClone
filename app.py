@@ -143,12 +143,12 @@ def upload_voice():
 
             # Validate duration
             cloner = get_voice_cloner()
-            is_valid, duration = cloner.validate_audio_duration(str(filepath))
+            is_valid, duration = cloner.validate_audio_duration(str(filepath), min_duration=6.0)
 
             if not is_valid:
                 return jsonify({
                     'success': False,
-                    'error': f'Audio too short. Duration: {duration:.1f}s. Need at least 6 seconds.'
+                    'error': f'Áudio muito curto. Duração: {duration:.1f}s. Precisa de pelo menos 6 segundos.'
                 }), 400
 
             return jsonify({
