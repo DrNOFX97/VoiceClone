@@ -80,15 +80,43 @@ class VoiceCloner:
 
     def _ensure_api_server(self):
         """Ensure Fish Speech API server is running"""
+        # Try with longer timeout (server might be slow to respond)
+        logger.info("Verificando servidor Fish Speech API...")
         try:
-            response = requests.get(f"{API_URL}/v1/health", timeout=2)
+            response = requests.get(f"{API_URL}/v1/health", timeout=10)
             if response.status_code == 200:
-                logger.info("Fish Speech API server is already running")
+                logger.info("✅ Servidor Fish Speech API está a responder")
                 return
+        except requests.Timeout:
+            logger.warning("⚠️  Servidor demorou >10s a responder, mas pode estar ocupado")
+            # Try one more time with even longer timeout
+            try:
+                response = requests.get(f"{API_URL}/v1/health", timeout=30)
+                if response.status_code == 200:
+                    logger.info("✅ Servidor Fish Speech API respondeu (lento mas funcional)")
+                    return
+            except:
+                pass
         except Exception as e:
-            logger.debug(f"API server not responding: {e}")
+            logger.debug(f"Servidor API não responde: {e}")
 
-        logger.info("Starting Fish Speech API server...")
+        # Check if server process is already running
+        try:
+            import psutil
+            for proc in psutil.process_iter(['pid', 'name', 'cmdline']):
+                cmdline = proc.info.get('cmdline', [])
+                if cmdline and 'api_server.py' in ' '.join(cmdline):
+                    logger.info("✅ Processo api_server.py já está a correr")
+                    logger.info(f"   PID: {proc.info.get('pid')}")
+                    logger.info("   Servidor pode estar ocupado a processar outro pedido")
+                    logger.info("   A prosseguir... (o pedido será enfileirado)")
+                    return  # Server is running, assume it's functional
+        except ImportError:
+            pass  # psutil not available
+        except Exception:
+            pass  # Ignore psutil errors
+
+        logger.info("❌ Servidor não encontrado. A iniciar...")
         # Start server in background
         subprocess.Popen(
             [
@@ -104,18 +132,21 @@ class VoiceCloner:
             stderr=subprocess.DEVNULL,
         )
 
-        # Wait for server to start
-        for i in range(60):  # Wait up to 60 seconds
+        # Wait for server to start (with progress)
+        logger.info("Aguardando servidor inicializar (até 90 segundos)...")
+        for i in range(90):  # Wait up to 90 seconds
             try:
                 time.sleep(1)
-                response = requests.get(f"{API_URL}/v1/health", timeout=2)
+                if i % 10 == 0 and i > 0:
+                    logger.info(f"  ... ainda a aguardar ({i}s)")
+                response = requests.get(f"{API_URL}/v1/health", timeout=5)
                 if response.status_code == 200:
-                    logger.info("Fish Speech API server started successfully")
+                    logger.info(f"✅ Servidor iniciou com sucesso após {i+1} segundos")
                     return
             except:
                 continue
 
-        raise RuntimeError("Failed to start Fish Speech API server")
+        raise RuntimeError("Falha ao iniciar servidor Fish Speech após 90 segundos")
 
     def clone_voice(self, text, speaker_wav, language='pt', output_path='output.wav'):
         """

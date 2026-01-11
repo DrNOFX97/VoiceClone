@@ -19,6 +19,7 @@ flask-cors==4.0.0
 numpy==1.26.3
 scipy==1.11.4
 tqdm==4.66.1
+psutil>=5.9.0
 
 # System
 python-dotenv==1.0.0
